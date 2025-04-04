@@ -27,7 +27,7 @@ function verDetalles() {
             Nombre: "Sebastian Suarez", 
             Cargo: "Secretario", 
             Funciones: "Responsable de la organización y gestión administrativa del curso, llevando actas, gestionando la comunicación interna y asegurando el registro adecuado de las actividades y decisiones.", 
-            Contacto: "+56 9 9684 9297 (si vas a comunicarte que sea por whatsapp, iniciar 1nombre 1apellido y tu problema o duda)"
+            Contacto: "+56 9 9684 9297 (si vas a comunicarte que sea por whatsapp, iniciar nombre1+apellido1 y tu problema o duda) "
         },
 
         "teso": {
@@ -57,6 +57,7 @@ function verDetalles() {
             Funciones: "Fomenta la participación en actividades deportivas y promueve un ambiente de convivencia saludable dentro del curso.",
             Contacto: "No se ha proporcionado informacion"
         }
+
     };
 
     // Buscar el código en el objeto
@@ -70,4 +71,13 @@ function verDetalles() {
     } else {
         alert("Código no encontrado.");
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("codigo").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Evita que se envíe un formulario si está dentro de uno
+                verDetalles();
+            }
+        });
+    });
 }

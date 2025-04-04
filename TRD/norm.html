@@ -8,24 +8,27 @@
     <title>Document</title>
 </head>
 <body>
-    <section id="tilt">
-        <h2>Bienvenido al sitio de estudiantes.</h2>
+    <section id="titl">
+        <h2>Bienvenido estudiante.</h2>
         <h3>En este podras ver la informacion de los miembros del equipo de directiva.</h3>
     </section>
 
 <main>
     <section id="ingresar-codigo">
         <h2>Ingrese el Cargo</h2>
-        <p>Presi-dente, Vice-presidente, Sec-retario, 
+        <p>
+            <span style="color: red;">Presi</span>dente, <span style="color: red;">Vice</span>presidente, <span style="color: red;">Sec</span>retario, 
             <br>
-            Teso-rero, Delegado de *apoyo* 
+            <span style="color: red;">Teso</span>rero, Delegado de <span style="color: red;">apoyo</span> 
+            <br> 
+            directivo, Dlegado de <span style="color: red;">trabajos</span>, 
             <br>
-            directivo, Dlegado de *trabajos*, 
-            <br>
-            Delegado de *deporte* y convivencia
+            Delegado de <span style="color: red;">deporte</span> y convivencia
         </p>
+        <br>
         <input type="text" id="codigo" placeholder="Ingrese el Cargo">
         <button onclick="verDetalles()">INGRESAR</button>
+        <br><br><br><br><br>
     </section>
     <br>
     <br>
@@ -40,6 +43,8 @@
             <strong>Funciones o responsabilidades:</strong> <span id="funciones"></span>
             <br><br>
             <strong>Contacto:</strong> <span id="contacto"></span>
+            <br><br>
+            <strong>wasa:</strong>
                     
         </ul>
     </section>
