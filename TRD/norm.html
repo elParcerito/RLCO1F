@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="norm.css">
+    <script defer src="norm.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <section id="tilt">
+        <h2>Bienvenido al sitio de estudiantes.</h2>
+        <h3>En este podras ver la informacion de los miembros del equipo de directiva.</h3>
+    </section>
+
+<main>
+    <section id="ingresar-codigo">
+        <h2>Ingrese el Cargo</h2>
+        <p>Presi-dente, Vice-presidente, Sec-retario, 
+            <br>
+            Teso-rero, Delegado de *apoyo* 
+            <br>
+            directivo, Dlegado de *trabajos*, 
+            <br>
+            Delegado de *deporte* y convivencia
+        </p>
+        <input type="text" id="codigo" placeholder="Ingrese el Cargo">
+        <button onclick="verDetalles()">INGRESAR</button>
+    </section>
+    <br>
+    <br>
+    <br>
+    <section id="detalles-entrega" style="display: none;">
+        <h1>Detalles De Cargos</h1>
+        <ul id="listaDatos">
+            <strong>Nombre:</strong> <span id="nombre"></span>
+            <br><br>
+            <strong>Cargo:</strong> <span id="cargo"></span>
+            <br><br>
+            <strong>Funciones o responsabilidades:</strong> <span id="funciones"></span>
+            <br><br>
+            <strong>Contacto:</strong> <span id="contacto"></span>
+                    
+        </ul>
+    </section>
+</main>

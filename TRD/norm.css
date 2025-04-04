@@ -1,0 +1,14 @@
+body {
+    text-align: center;
+    background-color: #1a1a1a; /*color de fondo*/
+    color: white; /*color de latra*/
+    font-family: Arial, sans-serif; /*tipografia*/
+    padding: 100px; /* espacio entre el borde y el contenido*/
+    margin: 10; /* espacio entre el borde y el contenido*/
+}
+
+#titl {
+    color: #00ff00; /* letras del titulo */
+    font-size: 40px; /* tamaño de la letra */
+    margin-bottom: 20px; /*espacio entre el titulo y el parrafo*/
+}

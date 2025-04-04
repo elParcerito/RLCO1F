@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+    color: aliceblue;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #1a1a1a;
+}
+
+#inicio {
+    color: cornflowerblue;     
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+input, button {
+    background-color: #00ff00;
+    color: #222;
+    padding: 10px;
+    margin: 10px;
+}
+
+container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
