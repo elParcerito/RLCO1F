@@ -2,10 +2,10 @@ function verDetalles() {
             var codigo = document.getElementById("codigo").value;
 
             var paginas = {
-                "1": "TRD/secre.html",
-                "2": "TRD/pre.html",
-                "3": "TRD/clash.html",
-                "4": "TRD/norm.html"
+                "1": "TRD/secre.html", /* secretario */
+                "2": "TRD/pre.html",   /* presidente */
+                "3": "TRD/clash.html", /* vicepresidente */
+                "4": "TRD/norm.html"   /* estudiantes */
             };
 
             if (paginas[codigo]) {
