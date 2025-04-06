@@ -1,19 +1,19 @@
 body {
     text-align: center;
-    color: black;
+    color: white;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    background-color: white;
+    background-color: black;
 }
 
 #inicio {
-    color: cornflowerblue;     
+    color: #34ffa6;     
     font-size: 40px;
     margin-bottom: 20px;
 }
 
 input, button {
-    background-color: #00ff00;
-    color: #222;
+    background-color: #bbe9ff; /* color de recuadro
+    color: #0012ff; /* color de letras */
     padding: 10px; /* el ancho de el recuadro */
     margin: auto;  /* el largo que recuadro*/
 }
