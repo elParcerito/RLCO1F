@@ -71,13 +71,13 @@ function verDetalles() {
     } else {
         alert("Código no encontrado.");
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("codigo").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault(); // Evita que se envíe un formulario si está dentro de uno
-                verDetalles();
-            }
-        });
-    });
+    
 }
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("codigo").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Evita que se envíe un formulario si está dentro de uno
+            verDetalles();
+        }
+    });
+});

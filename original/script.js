@@ -1,11 +1,14 @@
 function verDetalles() {
-            var codigo = document.getElementById("codigo").value;
+    // Obtener el código ingresado
+    let codigo = document.getElementById("codigo").value.trim().toLowerCase(); // Convertimos a minúsculas
+            
+            
 
             var paginas = {
-                "1": "TRD/secre.html", /* secretario */
-                "2": "TRD/pre.html",   /* presidente */
+                "1": "TRD/secre/secre.html", /* secretario */
+                "2": "TRD/presi/pre.html",   /* presidente */
                 "3": "TRD/clash.html", /* vicepresidente */
-                "4": "TRD/norm.html"   /* estudiantes */
+                "4": "TRD/estudi/norm.html"   /* estudiantes */
             };
 
             if (paginas[codigo]) {
