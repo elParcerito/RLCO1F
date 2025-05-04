@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Área protegida</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="firebase-config.js"></script>
   <style>
@@ -28,11 +24,11 @@
 
     function cerrarSesion() {
       firebase.auth().signOut().then(() => {
-        window.location.href = "index.html";
+        window.location.href = "../index.html";
       });
     }
   </script>
   <br><br><br>
-  <button><h1><a href="bla.html">iniciar pagina</a></h1></button>
+  <button><h1><a href="TRD/estudi/norm.html">iniciar pagina</a></h1></button>
 </body>
 </html>

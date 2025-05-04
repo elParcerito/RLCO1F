@@ -35,6 +35,7 @@
             Delegado de <span style="color: red;">deporte</span> y convivencia
         </p>
         <br>
+        <br>
         <input type="text" id="codigo" placeholder="Ingrese el Cargo">
         <button onclick="verDetalles()">INGRESAR</button>
         <br><br><br><br><br>
@@ -58,14 +59,14 @@
 </section>
 </main>
 
-<div>
-  <div id="observaciones">
-    <h2>Historial de observaciones:</h2>
-    <div id="listaObservaciones"></div>
+
+  <div id="avisos">
+    <h2>Lista de avisos</h2>
+    <div id="listaAvisos"></div>
   </div>
 
   <script>
-    // 🔐 Configuración de Firebase
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCHYo8LYSyOqgr6tBgo9RXODH0KRwZeowQ",
       authDomain: "live-de-eso.firebaseapp.com",
@@ -75,44 +76,58 @@
       appId: "1:250545251960:web:94ad354f2650d46d32af8d"
     };
 
-    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Mostrar observaciones en tiempo real
-    db.collection("observaciones").orderBy("timestamp", "desc")
-      .onSnapshot((querySnapshot) => {
-        const contenedor = document.getElementById("listaObservaciones");
-        contenedor.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          contenedor.innerHTML += `
-            <div class="obs">
-              <strong>${data.nombre}</strong>: ${data.texto}<br>
-              <small>${new Date(data.timestamp?.toDate()).toLocaleString()}</small>
-            </div>
-          `;
-        });
-      });
-
-    // Guardar una nueva observación
-    function guardarObservacion() {
-      const nombre = document.getElementById("nombreNino").value;
-      const texto = document.getElementById("textoObs").value;
-
-      if (nombre.trim() === "" || texto.trim() === "") {
-        alert("Por favor completa todos los campos.");
-        return;
-      }
-
-      db.collection("observaciones").add({
-        nombre,
-        texto,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        document.getElementById("textoObs").value = "";
-      });
+    function escapeHTML(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
     }
+
+    // Mostrar los avisos en tiempo real
+    db.collection("avisos").orderBy("fechaSubida", "desc").onSnapshot((querySnapshot) => {
+      const contenedor = document.getElementById("listaAvisos");
+      contenedor.innerHTML = "";
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const fechaEvento = data.fechaEvento?.toDate ? data.fechaEvento.toDate().toLocaleDateString() : "Sin fecha";
+        const fechaSubida = data.fechaSubida?.toDate ? new Date(data.fechaSubida.toDate()).toLocaleString() : "Sin registro";
+
+        contenedor.innerHTML += `
+          <div class="aviso">
+            <h3>${escapeHTML(fechaEvento)} — ${escapeHTML(data.descripcion)}</h3>
+            <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}</p>
+            <small>Publicado el ${fechaSubida}</small>
+          </div>
+        `;
+      });
+    });
+
+    // Guardar aviso
+    function guardarAviso(event) {
+  if (event) event.preventDefault(); // Evita que recargue la página
+
+  const remitente = document.getElementById("remitente").value.trim();
+  const descripcion = document.getElementById("descripcion").value.trim();
+  const fechaEvento = document.getElementById("fechaEvento").value;
+
+  if (!remitente || !descripcion || !fechaEvento) {
+    alert("Por favor completa todos los campos.");
+    return;
+  }
+
+  db.collection("avisos").add({
+    remitente,
+    descripcion,
+    fechaEvento: new Date(fechaEvento),
+    fechaSubida: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("Aviso enviado con éxito ✅");
+    document.getElementById("formularioAviso").reset();
+  });
+}
+
   </script>
 </body>
 </html>
