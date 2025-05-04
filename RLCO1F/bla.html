@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio De Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        #observaciones { margin-top: 20px; }
+        .obs { padding: 10px; border-bottom: 1px solid #ccc; }
+    </style>
+
+  <!-- SDKs de Firebase desde la nube -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <header>
+        <button id="modo">Modo oscuro</button>
+        <h1>Inicio De Sesión</h1>
+    </header>
+
+    <section id="ingresar-codigo">
+        <h2>Ingresa la contraseña entregada por la directiva.</h2>
+        <input type="text" id="codigo" placeholder="Ingresar contraseña aqui">
+        <br><br><br>
+        <button onclick="verDetalles()">Enviar</button>
+    </section>
+
+    <script src="script.js"></script>
+</head>
+</html>

@@ -1,0 +1,31 @@
+/* estilos de toda la pagina */
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif; /* tipo de letra (calugrafia) */
+    text-align: center;  /* alineacion del texto */
+    background-color: white;  /* color de fondo */ /* cambiar color */
+    color: black;  /* color de letra */ /* cambiar color */
+    transition: background-color 0.3s, color 0.3s; /* efecto de la transicion */
+}
+
+/* estilos de el boton */
+input, button {
+    padding: 10px 20px; /* ancho y alto del boton */
+    font-size: 16px; /* tamaño de la letra */
+    border: 100; /* borde */
+    cursor: pointer; /* estilo del cursor */
+    background-color: #007bff; /* color de fondo */
+    color: white; /* color de letra */
+    border-radius: 10px; /* borde redondeado */
+    margin-top: 20px; /* margen superior */
+}
+
+/* modo oscuro */
+.dark-mode {
+    background-color: black; /* color de fondo */
+    color: white; /* color de letra */
+}
+
+.dark-mode input, .dark-mode button {
+    background-color: #bbe9ff; /* color de fondo */
+    color: #074202; /* color de letra */
+}

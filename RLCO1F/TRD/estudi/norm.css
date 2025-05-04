@@ -1,0 +1,31 @@
+body {
+    text-align: center;
+    background-color: #1a1a1a; /*color de fondo*/
+    color: white; /*color de latra*/
+    font-family: Georgia, 'Times New Roman', Times, serif; /*tipografia*/
+    padding: 10px; /* espacio entre el borde y el contenido*/
+    margin: 50; /* espacio entre el borde y el contenido*/
+}
+
+#titl {
+    color: #00ff00; /* letras del titulo */
+    font-size: 15px; /* tamaño de la letra */
+    margin-bottom: 20px; /*espacio entre el titulo y el parrafo*/
+}
+
+input, button {
+    background-color: #00ff00; 
+    color: #222;  /* color de letra */
+    padding: 10px; /* el ancho de el recuadro */
+    margin: auto;  /* el largo que recuadro*/
+}
+
+#detalles-entrega {
+    background-color: gray;
+
+}
+
+#ingresar-codigo {
+    background-color: #aaecff;
+    color: black;
+}
