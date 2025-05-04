@@ -22,13 +22,48 @@
       const password = document.getElementById("password").value;
 
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
-          alert("Inicio de sesión exitoso");
-          window.location.href = "protegida.html";
-        })
-        .catch((error) => {
-          alert("Error: " + error.message);
-        });
+  .then((userCredential) => {
+    const correo = userCredential.user.email;
+
+    // Redirige según el correo
+    switch (correo) {
+      case "a.riveradiaz@liceorbl.cl":
+        window.location.href = "i/apoyo.html";
+        break;
+
+      case "j.perezmaggio@liceorbl.cl":
+        window.location.href = "i/depo.html";
+        break;
+
+      case "c.munozcastaneda@liceorbl.cl":
+        window.location.href = "i/presi.html";
+        break;
+
+      case "s.suarezllanos@liceorbl.cl":
+        window.location.href = "i/secre.html";
+        break;
+
+      case "v.uribenunez@liceorbl.cl":
+        window.location.href = "i/teso.html";
+        break;
+
+      case "c.garridoriquelme@liceorbl.cl":
+        window.location.href = "i/trab.html";
+        break;
+
+      case "m.arevalopavez@liceorbl.cl":
+        window.location.href = "i/vice.html";
+        break;
+      // Agrega más casos aquí
+      default:
+        window.location.href = "protegida.html"; // Página genérica si no coincide
+        break;
+    }
+  })
+  .catch((error) => {
+    alert("Error: " + error.message);
+  });
+
     }
   </script>
 </body>
