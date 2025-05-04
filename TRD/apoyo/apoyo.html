@@ -100,14 +100,15 @@
           const fechaSubida = data.fechaSubida?.toDate ? new Date(data.fechaSubida.toDate()).toLocaleString() : "Sin registro";
   
           contenedor.innerHTML += `
-            <div class="aviso">
-              <h3>${escapeHTML(fechaEvento)} — ${escapeHTML(data.descripcion)}</h3>
-              <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}</p>
-              <small>Publicado el ${fechaSubida}</small>
-            </div>
-          `;
-        });
+          <div class="aviso">
+            <p><strong>${escapeHTML(fechaEvento)} —</strong> ${escapeHTML(data.descripcion)}</p>
+            <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}.</p>
+            <p><small>Publicado el ${fechaSubida}</small></p>
+            <hr>
+          </div>
+      `;
       });
+    });
   
       // Guardar aviso
       function guardarAviso(event) {
