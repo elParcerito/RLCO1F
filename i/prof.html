@@ -1,0 +1,34 @@
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; display: none; }
+    .contenido { margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <h1>Bienvenido al área privada</h1>
+  <div class="contenido">
+    <p>Este contenido solo está disponible para usuarios autenticados.</p>
+    <button onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+
+  <script>
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.body.style.display = "block";
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    function cerrarSesion() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "../index.html";
+      });
+    }
+  </script>
+  <br><br><br>
+  <button><h1><a href="../TRD/prof/prof.html">iniciar pagina</a></h1></button>
+</body>
+</html>
