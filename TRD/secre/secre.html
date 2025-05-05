@@ -99,15 +99,17 @@
           const fechaSubida = data.fechaSubida?.toDate ? new Date(data.fechaSubida.toDate()).toLocaleString() : "Sin registro";
   
           contenedor.innerHTML += `
-          <div class="aviso">
-            <p><strong>${escapeHTML(fechaEvento)} —</strong> ${escapeHTML(data.descripcion)}</p>
-            <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}.</p>
-            <p><small>Publicado el ${fechaSubida}</small></p>
-            <hr>
+          <div class="aviso" style="border-bottom: 1px solid #ccc; margin-bottom: 15px; padding-bottom: 10px;">
+            <h3>${escapeHTML(fechaEvento)} — ${escapeHTML(data.descripcion)}</h3>
+            <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}</p>
+            <small>Publicado el ${fechaSubida}</small><br>
+            <button onclick="editarAviso('${doc.id}', '${escapeHTML(data.descripcion)}', '${escapeHTML(data.remitente)}', '${data.fechaEvento?.toDate().toISOString().slice(0, 10) || ''}')">Editar</button>
+            <button onclick="eliminarAviso('${doc.id}')">Eliminar</button>
           </div>
-      `;
+          `;
+        });
       });
-    });
+
   
       // Guardar aviso
       function guardarAviso(event) {
@@ -132,8 +134,72 @@
       document.getElementById("formularioAviso").reset();
     });
   }
+
+  function eliminarAviso(id) {
+  if (confirm("¿Estás seguro de que deseas eliminar este aviso?")) {
+    db.collection("avisos").doc(id).delete()
+      .then(() => {
+        alert("Aviso eliminado correctamente.");
+      })
+      .catch((error) => {
+        console.error("Error eliminando el aviso: ", error);
+      });
+  }
+}
+
+let idAvisoEditando = null;
+
+function editarAviso(id, descripcion, remitente, fechaEvento) {
+  idAvisoEditando = id;
+  document.getElementById("editDescripcion").value = descripcion;
+  document.getElementById("editRemitente").value = remitente;
+  document.getElementById("editFechaEvento").value = fechaEvento;
+  document.getElementById("formEditar").style.display = "block";
+}
+
+function cancelarEdicion() {
+  idAvisoEditando = null;
+  document.getElementById("formEditar").style.display = "none";
+}
+
+function guardarCambiosAviso() {
+  const descripcion = document.getElementById("editDescripcion").value.trim();
+  const remitente = document.getElementById("editRemitente").value.trim();
+  const fechaEvento = document.getElementById("editFechaEvento").value;
+
+  if (!descripcion || !remitente || !fechaEvento) {
+    alert("Por favor completa todos los campos.");
+    return;
+  }
+
+  db.collection("avisos").doc(idAvisoEditando).update({
+    descripcion,
+    remitente,
+    fechaEvento: new Date(fechaEvento)
+  }).then(() => {
+    alert("Aviso actualizado con éxito.");
+    cancelarEdicion();
+  }).catch((error) => {
+    console.error("Error actualizando aviso:", error);
+  });
+}
+
   
     </script>
+    <div id="formEditar" style="display:none; border:1px solid #ccc; padding:15px; margin-top:20px;">
+      <h3>Editar Aviso</h3>
+      <label>Descripción:</label><br>
+      <input type="text" id="editDescripcion"><br><br>
+      <label>Remitente:</label><br>
+      <input type="text" id="editRemitente"><br><br>
+      <label>Fecha del Evento:</label><br>
+      <input type="date" id="editFechaEvento"><br><br>
+      <button onclick="guardarCambiosAviso()">Guardar Cambios</button>
+      <button onclick="cancelarEdicion()">Cancelar</button>
+    </div>
+
+    
+    
   </body>
   </html>
   
