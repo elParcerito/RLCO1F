@@ -127,7 +127,10 @@
     db.collection("avisos").add({
       remitente,
       descripcion,
-      fechaEvento: new Date(fechaEvento),
+      fechaEvento: firebase.firestore.Timestamp.fromDate(
+      new Date(fechaEvento + "T12:00:00")
+    ),
+
       fechaSubida: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
       alert("Aviso enviado con éxito ✅");
