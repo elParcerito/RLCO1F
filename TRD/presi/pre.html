@@ -58,22 +58,22 @@
   </main>
   
 
-  <form id="formularioAviso" onsubmit="guardarAviso(); return false;">
+  <form id="formularioAviso" onsubmit="guardarAviso(event); return false;">
     <div class="form-group">
       <label for="remitente">¿Quién eres?</label>
       <input type="text" id="remitente" placeholder="Tu nombre o rol">
     </div>
-  
+
     <div class="form-group">
       <label for="descripcion">Contenido del aviso</label>
       <textarea id="descripcion" rows="4" placeholder="Escribe el aviso aquí..."></textarea>
     </div>
-  
+
     <div class="form-group">
       <label for="fechaEvento">Fecha del evento</label>
       <input type="date" id="fechaEvento">
     </div>
-  
+
     <button type="submit">Enviar aviso</button>
   </form>
   
