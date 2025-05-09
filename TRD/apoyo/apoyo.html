@@ -54,7 +54,7 @@
       <p class="quote">"Apoyar a los demás no te hace menos líder, te hace indispensable."</p>
     </div>
     <div class="back-btn">
-        <a href="../../index.html">← Volver al inicio</a>
+      <a onclick="cerrarSesion()">← Volver al inicio</a>
         <a href="../../TRD/estudi/norm.html">Ir a estudiante →</a>
       </div>
   </main>
@@ -87,6 +87,18 @@
     </div>
   
     <script>
+
+    function cerrarSesion() {
+      firebase.auth().signOut()
+        .then(() => {
+          alert("Sesión cerrada");
+          window.location.href = "../../index.html";
+        })
+        .catch((error) => {
+          console.error("Error al cerrar sesión:", error);
+        });
+    }
+
       function escapeHTML(text) {
         const div = document.createElement("div");
         div.textContent = text;

@@ -33,6 +33,9 @@
   <script src="../auth-check.js"></script>
 </head>
 <body>
+  <script src="../../firebase-config.js"></script> <!-- Tu configuración de Firebase -->
+  <script src="../auth-check.js"></script> <!-- Tu script que redirige si no está logueado -->
+
   <header>
     <h1>Secretario del curso</h1>
   </header>
@@ -53,7 +56,7 @@
     </div>
 
     <div class="back-btn">
-      <a href="../../index.html">← Volver al inicio</a>
+      <a onclick="cerrarSesion()">← Volver al inicio</a>
       <a href="../../TRD/estudi/norm.html">Ir a estudiante →</a>
     </div>
   </main>
@@ -92,6 +95,18 @@
   </div>
 
   <script>
+    function cerrarSesion() {
+      firebase.auth().signOut()
+        .then(() => {
+          alert("Sesión cerrada");
+          window.location.href = "../../index.html";
+        })
+        .catch((error) => {
+          console.error("Error al cerrar sesión:", error);
+        });
+    }
+
+
     function escapeHTML(text) {
       const div = document.createElement("div");
       div.textContent = text;
