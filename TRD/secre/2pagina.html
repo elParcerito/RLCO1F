@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="secre.css">
+  <title>Secretario del Curso</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #observaciones { margin-top: 20px; }
+    .obs { padding: 10px; border-bottom: 1px solid #ccc; }
+  </style>
+
+  <!-- SDKs de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <!-- Configuración de Firebase (usa solo una fuente, aquí va embebida) -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCHYo8LYSyOqgr6tBgo9RXODH0KRwZeowQ",
+      authDomain: "live-de-eso.firebaseapp.com",
+      projectId: "live-de-eso",
+      storageBucket: "live-de-eso.appspot.com",
+      messagingSenderId: "250545251960",
+      appId: "1:250545251960:web:94ad354f2650d46d32af8d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
+  <script src="../auth-check.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Secretario del curso</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Sebastian Suarez</h2>
+      <p><strong>Rol:</strong> Secretario del curso</p>
+      <p><strong>Responsabilidades:</strong></p>
+      <ul>
+        <li>Tomar nota en las reuniones del curso.</li>
+        <li>Informar al curso sobre acuerdos o actividades.</li>
+        <li>Organizar documentos o listas cuando se necesite.</li>
+        <li>Apoyar al delegado en tareas organizativas.</li>
+        <li>Colaborar con profesores si se solicita.</li>
+      </ul>
+      <p class="quote">"La responsabilidad es el precio de la grandeza."</p>
+    </div>
+
+    <div class="back-btn">
+      <a href="../../index.html">← Volver al inicio</a>
+      <a href="../../TRD/estudi/norm.html">Ir a estudiante →</a>
+    </div>
+  </main>
+
+  <form id="formularioAviso" onsubmit="guardarAviso(event); return false;">
+    <div class="form-group">
+      <label for="remitente">¿Quién eres?</label>
+      <input type="text" id="remitente" placeholder="Tu nombre o rol">
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Contenido del aviso</label>
+      <textarea id="descripcion" rows="4" placeholder="Escribe el aviso aquí..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="fechaEvento">Fecha del evento</label>
+      <input type="date" id="fechaEvento">
+    </div>
+
+    <button type="submit">Enviar aviso</button>
+  </form>
+
+  <div id="avisos">
+    <h2>Lista de avisos</h2>
+    <div id="listaAvisos"></div>
+  </div>
+
+
+  <script>
+    function escapeHTML(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Mostrar avisos en tiempo real
+    db.collection("avisos").orderBy("fechaSubida", "desc").onSnapshot((querySnapshot) => {
+      const contenedor = document.getElementById("listaAvisos");
+      contenedor.innerHTML = "";
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const fechaEvento = data.fechaEvento?.toDate?.() ? data.fechaEvento.toDate().toLocaleDateString() : "Sin fecha";
+        const fechaSubida = data.fechaSubida?.toDate?.() ? data.fechaSubida.toDate().toLocaleString() : "Sin registro";
+
+        contenedor.innerHTML += `
+          <div class="aviso" style="border-bottom: 1px solid #ccc; margin-bottom: 15px; padding-bottom: 10px;">
+            <h3>${escapeHTML(fechaEvento)} — ${escapeHTML(data.descripcion)}</h3>
+            <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}</p>
+            <small>Publicado el ${fechaSubida}</small><br>
+          </div>
+        `;
+      });
+    });
+
+    function guardarAviso(event) {
+      event.preventDefault();
+      const remitente = document.getElementById("remitente").value.trim();
+      const descripcion = document.getElementById("descripcion").value.trim();
+      const fechaEvento = document.getElementById("fechaEvento").value;
+
+      if (!remitente || !descripcion || !fechaEvento) {
+        alert("Por favor completa todos los campos.");
+        return;
+      }
+
+      db.collection("avisos").add({
+        remitente,
+        descripcion,
+        fechaEvento: firebase.firestore.Timestamp.fromDate(new Date(fechaEvento + "T12:00:00")),
+        fechaSubida: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("Aviso enviado con éxito ✅");
+        document.getElementById("formularioAviso").reset();
+      });
+    }
+  </script>
+</body>
+</html>

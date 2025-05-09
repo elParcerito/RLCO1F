@@ -11,12 +11,25 @@
     .obs { padding: 10px; border-bottom: 1px solid #ccc; }
   </style>
 
-  <!-- SDKs de Firebase desde la nube -->
+  <!-- SDKs de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="../../firebase-config.js"></script>
+
+  <!-- Configuración de Firebase (usa solo una fuente, aquí va embebida) -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCHYo8LYSyOqgr6tBgo9RXODH0KRwZeowQ",
+      authDomain: "live-de-eso.firebaseapp.com",
+      projectId: "live-de-eso",
+      storageBucket: "live-de-eso.appspot.com",
+      messagingSenderId: "250545251960",
+      appId: "1:250545251960:web:94ad354f2650d46d32af8d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
   <script src="../auth-check.js"></script>
 </head>
 <body>
@@ -74,70 +87,99 @@
     </div>
   
     <script>
-      // Configuración de Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyCHYo8LYSyOqgr6tBgo9RXODH0KRwZeowQ",
-        authDomain: "live-de-eso.firebaseapp.com",
-        projectId: "live-de-eso",
-        storageBucket: "live-de-eso.firebasestorage.app",
-        messagingSenderId: "250545251960",
-        appId: "1:250545251960:web:94ad354f2650d46d32af8d"
-      };
-  
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-  
       function escapeHTML(text) {
         const div = document.createElement("div");
         div.textContent = text;
         return div.innerHTML;
       }
   
-      // Mostrar los avisos en tiempo real
+      // Mostrar avisos en tiempo real
       db.collection("avisos").orderBy("fechaSubida", "desc").onSnapshot((querySnapshot) => {
         const contenedor = document.getElementById("listaAvisos");
         contenedor.innerHTML = "";
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const fechaEvento = data.fechaEvento?.toDate ? data.fechaEvento.toDate().toLocaleDateString() : "Sin fecha";
-          const fechaSubida = data.fechaSubida?.toDate ? new Date(data.fechaSubida.toDate()).toLocaleString() : "Sin registro";
+          const fechaEvento = data.fechaEvento?.toDate?.() ? data.fechaEvento.toDate().toLocaleDateString() : "Sin fecha";
+          const fechaSubida = data.fechaSubida?.toDate?.() ? data.fechaSubida.toDate().toLocaleString() : "Sin registro";
   
           contenedor.innerHTML += `
-          <div class="aviso">
-            <p><strong>${escapeHTML(fechaEvento)} —</strong> ${escapeHTML(data.descripcion)}</p>
-            <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}.</p>
-            <p><small>Publicado el ${fechaSubida}</small></p>
-            <hr>
-          </div>
-      `;
+            <div class="aviso" style="border-bottom: 1px solid #ccc; margin-bottom: 15px; padding-bottom: 10px;">
+              <h3>${escapeHTML(fechaEvento)} — ${escapeHTML(data.descripcion)}</h3>
+              <p><strong>Publicado por:</strong> ${escapeHTML(data.remitente)}</p>
+              <small>Publicado el ${fechaSubida}</small><br>
+              <button onclick="editarAviso('${doc.id}', '${escapeHTML(data.descripcion)}', '${escapeHTML(data.remitente)}', '${data.fechaEvento?.toDate().toISOString().slice(0, 10) || ''}')">Editar</button>
+              <button onclick="eliminarAviso('${doc.id}')">Eliminar</button>
+            </div>
+          `;
+        });
       });
-    });
   
-      // Guardar aviso
       function guardarAviso(event) {
-    if (event) event.preventDefault(); // Evita que recargue la página
+        event.preventDefault();
+        const remitente = document.getElementById("remitente").value.trim();
+        const descripcion = document.getElementById("descripcion").value.trim();
+        const fechaEvento = document.getElementById("fechaEvento").value;
   
-    const remitente = document.getElementById("remitente").value.trim();
-    const descripcion = document.getElementById("descripcion").value.trim();
-    const fechaEvento = document.getElementById("fechaEvento").value;
+        if (!remitente || !descripcion || !fechaEvento) {
+          alert("Por favor completa todos los campos.");
+          return;
+        }
   
-    if (!remitente || !descripcion || !fechaEvento) {
-      alert("Por favor completa todos los campos.");
-      return;
-    }
+        db.collection("avisos").add({
+          remitente,
+          descripcion,
+          fechaEvento: firebase.firestore.Timestamp.fromDate(new Date(fechaEvento + "T12:00:00")),
+          fechaSubida: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          alert("Aviso enviado con éxito ✅");
+          document.getElementById("formularioAviso").reset();
+        });
+      }
   
-    db.collection("avisos").add({
-      remitente,
-      descripcion,
-      fechaEvento: new Date(fechaEvento),
-      fechaSubida: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      alert("Aviso enviado con éxito ✅");
-      document.getElementById("formularioAviso").reset();
-    });
-  }
+      function eliminarAviso(id) {
+        if (confirm("¿Estás seguro de que deseas eliminar este aviso?")) {
+          db.collection("avisos").doc(id).delete()
+            .then(() => alert("Aviso eliminado correctamente."))
+            .catch((error) => console.error("Error eliminando el aviso: ", error));
+        }
+      }
   
+      let idAvisoEditando = null;
+  
+      function editarAviso(id, descripcion, remitente, fechaEvento) {
+        idAvisoEditando = id;
+        document.getElementById("editDescripcion").value = descripcion;
+        document.getElementById("editRemitente").value = remitente;
+        document.getElementById("editFechaEvento").value = fechaEvento;
+        document.getElementById("formEditar").style.display = "block";
+      }
+  
+      function cancelarEdicion() {
+        idAvisoEditando = null;
+        document.getElementById("formEditar").style.display = "none";
+      }
+  
+      function guardarCambiosAviso() {
+        const descripcion = document.getElementById("editDescripcion").value.trim();
+        const remitente = document.getElementById("editRemitente").value.trim();
+        const fechaEvento = document.getElementById("editFechaEvento").value;
+  
+        if (!descripcion || !remitente || !fechaEvento) {
+          alert("Por favor completa todos los campos.");
+          return;
+        }
+  
+        db.collection("avisos").doc(idAvisoEditando).update({
+          descripcion,
+          remitente,
+          fechaEvento: firebase.firestore.Timestamp.fromDate(new Date(fechaEvento + "T12:00:00"))
+        }).then(() => {
+          alert("Aviso actualizado con éxito.");
+          cancelarEdicion();
+        }).catch((error) => {
+          console.error("Error actualizando aviso:", error);
+        });
+      }
     </script>
-  </body>
-  </html>
-  
+</body>
+</html>
